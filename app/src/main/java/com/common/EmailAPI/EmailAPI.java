@@ -1,7 +1,5 @@
 package com.common.EmailAPI;
 
-import com.common.OAuthManager;
-
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
@@ -20,15 +18,10 @@ public class EmailAPI {
 
     private Properties props;
     private Authenticator auth;
-    private OAuthManager oAuthManager;
 
     public static enum ContentType{
         Plain,
         HTML
-    }
-
-    public void setoAuthManager(OAuthManager oAuthManager){
-        this.oAuthManager = oAuthManager;
     }
 
     public void setSSLProps(String userID, String password, String port, String smtpHostServer) throws Exception{
@@ -110,10 +103,6 @@ public class EmailAPI {
     }
 
     private void setProps(final String userID, String password, final String port, final String smtpHostServer) throws Exception{
-
-        if(oAuthManager != null){
-            password = oAuthManager.getToken().getAccessToken();
-        }
 
         final String finalPassword = password;
 

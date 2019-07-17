@@ -30,9 +30,6 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.8'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
-    implementation 'com.google.api-client:google-api-client:1.23.0'
-    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
-    implementation 'com.google.apis:google-api-services-gmail:v1-rev103-1.23.0'
     implementation files('libs/poi-3.9-20121203.jar')
     implementation files('libs/poi-ooxml-3.9-20121203.jar')
     implementation files('libs/xmlbeans-3.1.0.jar')

@@ -1,7 +1,7 @@
 package com.common.ExcelAPI;
 
-import com.common.WriterManager;
-import com.common.WriterManagerInfo;
+import com.common.AbstractOrInterface.WriterManager;
+import com.common.AbstractOrInterface.WriterManagerInfo;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.FontUnderline;
@@ -14,13 +14,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import static com.common.WriterManagerInfo.ContentStyle.Bold;
-import static com.common.WriterManagerInfo.ContentStyle.BoldItalic;
-import static com.common.WriterManagerInfo.ContentStyle.BoldStrikeThrough;
-import static com.common.WriterManagerInfo.ContentStyle.BoldUnderLine;
-import static com.common.WriterManagerInfo.ContentStyle.Italic;
-import static com.common.WriterManagerInfo.ContentStyle.StrikeThrough;
-import static com.common.WriterManagerInfo.ContentStyle.UnderLine;
+import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.Bold;
+import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.BoldItalic;
+import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.BoldStrikeThrough;
+import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.BoldUnderLine;
+import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.Italic;
+import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.StrikeThrough;
+import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.UnderLine;
 
 public class ExcelAPI extends WriterManager {
 

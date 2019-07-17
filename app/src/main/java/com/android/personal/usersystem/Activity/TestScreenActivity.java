@@ -12,10 +12,11 @@ import android.widget.Toast;
 
 import com.android.personal.usersystem.R;
 import com.common.EmailAPI.EmailAPI;
-import com.common.EmailAPI.GMailAPI;
 import com.common.ExcelAPI.ExcelAPI;
 import com.common.HTMLAPI.HTMLAPI;
-import com.common.WriterManagerInfo;
+import com.common.AbstractOrInterface.WriterManagerInfo;
+import com.common.OpenDriveAPI.ODLoginResponseInfo;
+import com.common.OpenDriveAPI.OpenDriveAPI;
 
 import java.io.File;
 
@@ -47,7 +48,7 @@ public class TestScreenActivity extends AppCompatActivity {
                         //testEmailSend();
                         //testExcelWrite();
                         //testHTML();
-                        testGmailSend();
+                        testOpenDrive();
                     }
                 });
             }
@@ -110,23 +111,6 @@ public class TestScreenActivity extends AppCompatActivity {
         }
     }
 
-    private void testGmailSend(){
-        try{
-
-            GMailAPI gMailAPI = new GMailAPI("redwavefotissimo@gmail.com");
-
-            /*gMailAPI.sendMessage(gMailAPI.processCredential(),
-                    gMailAPI.createEmail("redwavefotissimo@gmail.com", "subject", "body test"));
-            */
-            gMailAPI.processCredential();
-            Toast.makeText(TestScreenActivity.this, "done send", Toast.LENGTH_LONG).show();
-            Log.e(TAG, "done send");
-        }
-        catch (Exception ex){
-            Toast.makeText(TestScreenActivity.this, ex.toString(), Toast.LENGTH_LONG).show();
-        }
-    }
-
     private void testEmailSend(){
         try {
             EmailAPI emailAPI = new EmailAPI();
@@ -138,6 +122,18 @@ public class TestScreenActivity extends AppCompatActivity {
         }
         catch (Exception ex){
             Toast.makeText(TestScreenActivity.this, ex.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void testOpenDrive(){
+        OpenDriveAPI ODAPI = new OpenDriveAPI("redwavefotissimo@gmail.com", "Prettycure1");
+
+        try {
+            ODAPI.getSessionID();
+            ODAPI.getLoginResponseInfo();
+            ODAPI.getDocumentsFolder();
+        } catch (Exception e){
+            Toast.makeText(TestScreenActivity.this, e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 }
