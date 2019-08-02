@@ -65,7 +65,7 @@ public class BoxNetAPI {
         JceOpenSSLPKCS8DecryptorProviderBuilder decryptBuilder =
                 new JceOpenSSLPKCS8DecryptorProviderBuilder().setProvider("BC");
         InputDecryptorProvider decryptProvider
-                = decryptBuilder.build(passphrase);
+                = decryptBuilder.build(passphrase); 
 
         PrivateKeyInfo keyInfo
                 = ((PKCS8EncryptedPrivateKeyInfo) keyPair).decryptPrivateKeyInfo(decryptProvider);
