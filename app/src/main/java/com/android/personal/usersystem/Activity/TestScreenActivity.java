@@ -26,6 +26,7 @@ import com.common.HTMLAPI.HTMLAPI;
 import com.common.AbstractOrInterface.WriterManagerInfo;
 import com.common.OpenDriveAPI.OpenDriveAPI;
 import com.common.SMSAPI.SMSAPI;
+import com.common.recaptchaAPI.ReCaptcha;
 import com.developer.filepicker.controller.DialogSelectionListener;
 import com.developer.filepicker.model.DialogConfigs;
 import com.developer.filepicker.model.DialogProperties;
@@ -105,8 +106,9 @@ public class TestScreenActivity extends AppCompatActivity {
                         //testExcelWrite();
                         //testHTML();
                         //testOpenDrive();
-                        testBoxNet();
+                        //testBoxNet();
                         //testSMSSendAndRead();
+                        testRecaptcha();
                     }
                 });
             }
@@ -285,5 +287,34 @@ public class TestScreenActivity extends AppCompatActivity {
     private void testSMSSendAndRead(){
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, PickContact);
+    }
+
+    private void testRecaptcha(){
+        ReCaptcha reCaptcha = new ReCaptcha(this);
+        final Handler handler = new Handler(this.getMainLooper());
+        reCaptcha.setReCaptchaResults(new ReCaptcha.ReCaptchaResults() {
+            @Override
+            public void onSuccess(final String success) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(TestScreenActivity.this, success , Toast.LENGTH_LONG).show();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onError(final String error) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(TestScreenActivity.this, error , Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+        reCaptcha.connectGoogleApiClient();
+        reCaptcha.useReCaptcha();
     }
 }

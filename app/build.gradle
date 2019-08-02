@@ -35,6 +35,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
     implementation 'com.github.TutorialsAndroid:FilePicker:v4.0.19'
     implementation 'com.kishan.askpermission:askpermission:1.0.3'
+    implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
     implementation files('libs/poi-3.9-20121203.jar')
     implementation files('libs/poi-ooxml-3.9-20121203.jar')
     implementation files('libs/xmlbeans-3.1.0.jar')
