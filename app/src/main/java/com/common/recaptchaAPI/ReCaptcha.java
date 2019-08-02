@@ -24,8 +24,8 @@ import java.util.concurrent.Executor;
 
 public class ReCaptcha {
 
-    final String siteKey = "6Lf77bAUAAAAAKkugZ3kzGczn3l7uKiC_FefhhxP";
-    final String siteSecret = "6Lf77bAUAAAAAB6RlC0aPfo93RltXWlLDsXZHVAS";
+    final String siteKey = ""; // removed the key to hide, insert your own
+    final String siteSecret = ""; // removed the key to hide, insert your own
     final String TAG = "ReCaptcha";
     final String finalVerifyURI = "https://www.google.com/recaptcha/api/siteverify";
 
