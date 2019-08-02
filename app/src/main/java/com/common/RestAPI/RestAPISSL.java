@@ -38,6 +38,12 @@ public class RestAPISSL extends RestAPI {
             conn.setRequestProperty("accept-charset", "UTF-8");
             conn.setRequestProperty("Content-Type","multipart/form-data;charset=utf-8;boundary=" + boundary);
 
+            if(this.RestAPIHeaderInfos != null){
+                for(RestAPIInfo info : this.RestAPIHeaderInfos){
+                    conn.setRequestProperty(info.fieldName, info.fieldData);
+                }
+            }
+
             if(RestAPIInfos != null && RestAPIInfos.size() > 0)
             {
                 DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
@@ -136,4 +142,5 @@ public class RestAPISSL extends RestAPI {
 
         return responseString;
     }
+
 }

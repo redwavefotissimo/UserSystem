@@ -1,8 +1,23 @@
 package com.common;
 
+import android.app.Activity;
+import android.content.res.AssetManager;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -35,5 +50,32 @@ public class Utils {
         }
         return md5;
     }
+
+    public static InputStream getAssetFileConent(Activity activity, String fileLoc) throws Exception{
+        AssetManager assetManager = activity.getAssets();
+
+        InputStream in = assetManager.open(fileLoc, AssetManager.ACCESS_BUFFER);
+
+        return in;
+    }
+
+    public static String StreamToString(InputStream in) throws IOException {
+        if(in == null) {
+            return "";
+        }
+        Writer writer = new StringWriter();
+        char[] buffer = new char[1024];
+        try {
+            Reader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+            int n;
+            while ((n = reader.read(buffer)) != -1) {
+                writer.write(buffer, 0, n);
+            }
+            in.close();
+        } finally {
+        }
+        return writer.toString();
+    }
+
 
 }

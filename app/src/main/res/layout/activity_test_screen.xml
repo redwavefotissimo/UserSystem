@@ -11,4 +11,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Test" />
+
+    <Button
+        android:id="@+id/buttonFileBrowser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonTest"
+        android:text="File Browse" />
+
+    <TextView
+        android:id="@+id/fileLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonFileBrowser"/>
 </RelativeLayout>

@@ -11,4 +11,15 @@ public class ODFolderResponseInfo {
     public String ChildFolders;
     public String Link;
     public String Encrypted;
+
+    public String getAccessFolderId(){
+        switch (this.Access){
+            case 2:
+                return "Hidden";
+            case 3:
+                return "Private";
+            default:
+                return "Public";
+        }
+    }
 }

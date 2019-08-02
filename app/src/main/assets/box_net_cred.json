@@ -1,0 +1,12 @@
+{
+  "boxAppSettings": {
+    "clientID": "p9o37qyyxtly787u51wvzssswcww1fh5",
+    "clientSecret": "AVwuBpmYmKMFzkxdjbDikI6ejDunAgP2",
+    "appAuth": {
+      "publicKeyID": "vk75st4b",
+      "privateKey": "-----BEGIN ENCRYPTED PRIVATE KEY-----\nMIIFDjBABgkqhkiG9w0BBQ0wMzAbBgkqhkiG9w0BBQwwDgQI3GxIkEE3q7ECAggA\nMBQGCCqGSIb3DQMHBAisAc54z2t1tASCBMiCvd9H6bGgqSgl4Dqavq7xrK+hVqXF\nMTopfggokaugcWlkvdr8Nq61reBToX9PWaiK1y93VLsIhxm85USJXqGCnKmMaCWx\nDhb+wrMO20AoReX64FW0fcwdNabIjdCQM+o5dmgvY71KL1aaSnr84WQYLK49yvo/\nlqqzBoncMFY37y5RNbmzCvR4pn/ZYj0haikKqKfAUFQC9mO59t8QUluQq7QewuJK\ncFAm5uL4KIkla/gfRoqoopET9RyLV9lHnox7RV9qF5/jvdAQGNTWdIXb3ZQ0bSeu\nym7hSFvSN/jQ1mq9XYKtv47IDNGfzDXIERkADIuWC2/yxX8yVB8Yv5UaZwH5Z9Du\nX90ywma6gvVKTAVZHCQm9q/9r0Qw4gKf+CpzpSuQZefMtQasJSjRU+rdL5oImTVE\nfitD+0RsIsI4g4NHbIPAjsSWlCxOc6rq4ZcdjSSEce8/Wdimh8CJSRQtIXnxjQH1\nGHdhMjar39Uhp09X8MclSqgz+TkTVpa6WSW5PaST/yZJODXsqoE9Yef8rMOD3zu6\n6R6ve0QYaab+r2E/m6GE6cRd4tdbTZL7W2dTPzvAQkLJasnn/OkPdqNys5lcSjL0\nCmUC8N5l6IAOLLqJF1dom1jNFqyRGPhW+uH00TrMwcl1kaZxoHczukrBahGwOuTC\nX6xrfjvNL75P8WgiNMMqLi1HhgD4miO0+TlRID7m1orO02IDNhXE5/ErTNkD7+rK\ni5RhOxysGiFGkug2p/ni42f3YEV2aJcZvNF0nQtj3gaILm+A1PJiiaMERdRc+7V8\nWbb1RajSOIJpROect5eGC1M8RggLkTtMl2I+GIgkeQaKR3gPBEuzHoLW+WzJxB0w\nJU2JaEi7uuvCVL0Ct/qXG2oHFx/p1saNB427w3Abdzf4uqXU/jScpP4cEwBVplTr\nir981UhbWZf8t4qLxM6I4ABcKYbo+rtkCmHuhbzw7ifT0nA2ImKSMqXTo5xsAT3d\n8fRV3QBg5BxmkHNnXE9v5YtPqaw8P6YdPUzDhvn1aTCYzpcDkBmGNbagnw6iIj5B\n1R1hd5mEmIeUeQbTw7MxzqCnl+td7WeX+Bt83nTVXT0iO2V/fIN8jm8gHjHBU5I7\nadia3C/z4nxUVQa+AYG+EsJofamaWp6l2k9U0bIh3GWcwj3FB0mZC4M4fyfQu1No\nQD3FlYre/rOHKSXTJzSZFAwwnf3Zp1fWJ52Lr7KwM5ECWZC/9ai9qIlmFdP1SjRW\n/k7S0YbEtNBzGINNhoBhQYNARJfU+lb1NEakWZQeMBHeLRSEXo+EbQ4wvhKLvniI\nrYzqLVWmIO0ISLOMgTUSkUGVKlgCPLbncpwij1QNu39YUrJkHj4lF4De495u9xXV\noM9nTdzByErufam6cgM0exqPMiW/vayiEO5jKmug5yhJ7XunhuUtc3NeDgQrQfPF\npLUmDzmQOFx9KIZ76XqR8OKi/+1gdZjHd+Cy9JeWdk/5Qk18Rl7fmJIvHvzylpcB\naWB3zy51AbpABhhT44+/nioxAKKaQJXbhmyHDNo9g0h6SuCby0I3dqT6iERRpEuu\n5eNpsUGBWP/DKsUzjaYYXJnvqtpaIcdjuvC9cUAeVqQXwjaZtMMWtkh9dUnv3kxn\nkRA=\n-----END ENCRYPTED PRIVATE KEY-----\n",
+      "passphrase": "604b58779707d3687fe571735630a7bd"
+    }
+  },
+  "enterpriseID": "220739537"
+}

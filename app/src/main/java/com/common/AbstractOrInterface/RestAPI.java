@@ -8,6 +8,12 @@ import java.util.ArrayList;
 
 abstract public class RestAPI {
 
+    protected ArrayList<RestAPIInfo> RestAPIHeaderInfos;
+
+    public void setHeaders(ArrayList<RestAPIInfo> RestAPIInfos){
+        RestAPIHeaderInfos = RestAPIInfos;
+    }
+
     abstract public String POST(String URI, ArrayList<RestAPIInfo> RestAPIInfos);
 
     abstract public String GET(String URI, ArrayList<RestAPIInfo> RestAPIInfos);

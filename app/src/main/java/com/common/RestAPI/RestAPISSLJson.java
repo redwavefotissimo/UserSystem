@@ -27,6 +27,12 @@ public class RestAPISSLJson extends RestAPISSL {
             conn.setRequestProperty("accept", "application/json");
             conn.setRequestProperty("Content-Type","application/json; utf-8");
 
+            if(this.RestAPIHeaderInfos != null){
+                for(RestAPIInfo info : this.RestAPIHeaderInfos){
+                    conn.setRequestProperty(info.fieldName, info.fieldData);
+                }
+            }
+
             // always assumed 1 size
             OutputStream os = conn.getOutputStream();
             byte[] input =  RestAPIInfos.get(0).fieldData.getBytes("utf-8");
