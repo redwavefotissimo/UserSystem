@@ -6,6 +6,7 @@ import com.common.AbstractOrInterface.RestAPIInfo;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -52,13 +53,6 @@ public class RestAPISSL extends RestAPI {
                 {
                     dos.writeBytes(twoHyphens + boundary + lineEnd);
 
-                    // string data
-                    dos.writeBytes("Content-Disposition: form-data; name=\""+ RestAPIInfo.fieldName +"\"" + lineEnd);
-                    dos.writeBytes(lineEnd);
-                    dos.writeBytes(URLEncoder.encode(RestAPIInfo.fieldData,"UTF-8"));
-
-                    dos.writeBytes(lineEnd);
-
                     if(RestAPIInfo.isFile)
                     {
                         File sourceFile = new File(RestAPIInfo.fieldData);
@@ -87,6 +81,16 @@ public class RestAPISSL extends RestAPI {
                         fileInputStream.close();
 
                         dos.writeBytes(lineEnd);
+                    }else{
+                        // string data
+                        dos.writeBytes("Content-Disposition: form-data; name=\""+ RestAPIInfo.fieldName +"\"" + lineEnd);
+                        dos.writeBytes(lineEnd);
+                        if(RestAPIInfo.doEncode){
+                            RestAPIInfo.fieldData = URLEncoder.encode(RestAPIInfo.fieldData,"UTF-8");
+                        }
+                        dos.writeBytes(RestAPIInfo.fieldData);
+
+                        dos.writeBytes(lineEnd);
                     }
                 }
 
@@ -101,7 +105,7 @@ public class RestAPISSL extends RestAPI {
 
             int serverResponseCode = conn.getResponseCode();
 
-            if(serverResponseCode == 200)
+            if(serverResponseCode == 200 || serverResponseCode == 201)
             {
                 responseString = getStringFromInputStream(conn.getInputStream());
             }
@@ -125,6 +129,12 @@ public class RestAPISSL extends RestAPI {
             URL url = new URL(URI + constructParametersAsString(RestAPIInfos));
             conn = (HttpsURLConnection) url.openConnection();
             //conn.setConnectTimeout(1500);
+
+            if(this.RestAPIHeaderInfos != null){
+                for(RestAPIInfo info : this.RestAPIHeaderInfos){
+                    conn.setRequestProperty(info.fieldName, info.fieldData);
+                }
+            }
 
             int serverResponseCode = conn.getResponseCode();
 

@@ -20,11 +20,11 @@ import android.widget.Toast;
 
 import com.android.personal.usersystem.R;
 import com.common.BoxNetAPI.BoxNetAPI;
+import com.common.BoxNetAPI.BoxUploadedFileInfo;
 import com.common.EmailAPI.EmailAPI;
 import com.common.ExcelAPI.ExcelAPI;
 import com.common.HTMLAPI.HTMLAPI;
 import com.common.AbstractOrInterface.WriterManagerInfo;
-import com.common.OpenDriveAPI.OpenDriveAPI;
 import com.common.SMSAPI.SMSAPI;
 import com.common.recaptchaAPI.ReCaptcha;
 import com.developer.filepicker.controller.DialogSelectionListener;
@@ -105,10 +105,9 @@ public class TestScreenActivity extends AppCompatActivity {
                         //testEmailSend();
                         //testExcelWrite();
                         //testHTML();
-                        //testOpenDrive();
-                        //testBoxNet();
+                        testBoxNet();
                         //testSMSSendAndRead();
-                        testRecaptcha();
+                        //testRecaptcha();
                     }
                 });
             }
@@ -260,23 +259,14 @@ public class TestScreenActivity extends AppCompatActivity {
         }
     }
 
-    private void testOpenDrive(){
-        OpenDriveAPI ODAPI = new OpenDriveAPI("redwavefotissimo@gmail.com", "Prettycure1");
-
-        try {
-            ODAPI.getSessionID();
-            ODAPI.getLoginResponseInfo();
-            ODAPI.getPublicFolder();
-            ODAPI.uploadFile(fileToUpload);
-        } catch (Exception e){
-            Log.e(TAG,  e.toString());
-            Toast.makeText(TestScreenActivity.this, e.toString(), Toast.LENGTH_LONG).show();
-        }
-    }
-
     private void testBoxNet(){
         try {
             BoxNetAPI boxNetAPI = new BoxNetAPI(this);
+            boxNetAPI.getUserSystemFolder();
+            BoxUploadedFileInfo boxUploadedFileInfo = boxNetAPI.updloadFile(fileToUpload);
+            if(boxUploadedFileInfo != null){
+                Toast.makeText(this, "uploaded: " + boxUploadedFileInfo.entries[0].name, Toast.LENGTH_LONG).show();
+            }
         }
         catch (Exception e){
             Log.e(TAG,  e.toString());

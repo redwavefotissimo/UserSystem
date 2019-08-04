@@ -21,6 +21,7 @@ android {
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
     }
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -36,6 +37,8 @@ dependencies {
     implementation 'com.github.TutorialsAndroid:FilePicker:v4.0.19'
     implementation 'com.kishan.askpermission:askpermission:1.0.3'
     implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
+    implementation group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+
     implementation files('libs/poi-3.9-20121203.jar')
     implementation files('libs/poi-ooxml-3.9-20121203.jar')
     implementation files('libs/xmlbeans-3.1.0.jar')
@@ -45,9 +48,9 @@ dependencies {
     implementation files('libs/additionnal.jar')
     implementation files('libs/activation.jar')
     implementation files('libs/stax-api-1.0.jar')
-    implementation files('libs/bcpkix-jdk15on-162.jar')
     implementation files('libs/jose4j-0.6.5.jar')
-    implementation files('libs/bcprov-ext-jdk15on-162.jar')
-    implementation files('libs/bcpg-jdk15on-162.jar')
-    implementation files('libs/bctls-jdk15on-162.jar')
+    implementation files('libs/bcpkix-jdk15on-1.58.0.0.jar')
+    implementation files('libs/core-1.58.0.0.jar')
+    implementation files('libs/prov-1.58.0.0.jar')
+    implementation files('libs/slf4j-android-1.6.1-RC1.jar')
 }
