@@ -25,7 +25,7 @@ public class RestAPISSLJson extends RestAPISSL {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("accept", "application/json");
-            conn.setRequestProperty("Content-Type","application/json; utf-8");
+            conn.setRequestProperty("Content-Type","application/json");
 
             if(this.RestAPIHeaderInfos != null){
                 for(RestAPIInfo info : this.RestAPIHeaderInfos){
@@ -40,7 +40,7 @@ public class RestAPISSLJson extends RestAPISSL {
 
             int serverResponseCode = conn.getResponseCode();
 
-            if(serverResponseCode == 200)
+            if(serverResponseCode == 200 || serverResponseCode == 201)
             {
                 responseString = getStringFromInputStream(conn.getInputStream());
             }

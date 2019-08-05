@@ -153,4 +153,42 @@ public class RestAPISSL extends RestAPI {
         return responseString;
     }
 
+    @Override
+    public String DELETE(String URI, ArrayList<RestAPIInfo> RestAPIInfos) {
+        String responseString = "";
+        HttpsURLConnection conn = null;
+
+        try {
+            URL url = new URL(URI + constructParametersAsString(RestAPIInfos));
+            conn = (HttpsURLConnection) url.openConnection();
+            conn.setRequestMethod("DELETE");
+            //conn.setConnectTimeout(1500);
+
+            if(this.RestAPIHeaderInfos != null){
+                for(RestAPIInfo info : this.RestAPIHeaderInfos){
+                    conn.setRequestProperty(info.fieldName, info.fieldData);
+                }
+            }
+
+            int serverResponseCode = conn.getResponseCode();
+
+            if(serverResponseCode == 200)
+            {
+                responseString = getStringFromInputStream(conn.getInputStream());
+            }
+            else if(serverResponseCode == 204)
+            {
+                responseString = "";
+            }
+            else
+            {
+                responseString = "ERROR:" + getStringFromInputStream(conn.getErrorStream());
+            }
+        } catch (Exception e) {
+            responseString = "ERROR:" + e.toString();
+        }
+
+        return responseString;
+    }
+
 }

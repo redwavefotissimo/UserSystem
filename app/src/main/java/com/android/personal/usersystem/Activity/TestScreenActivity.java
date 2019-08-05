@@ -19,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.personal.usersystem.R;
+import com.common.BoxNetAPI.BoxItemCollectionInfo;
+import com.common.BoxNetAPI.BoxItemInfo;
+import com.common.BoxNetAPI.BoxItemSimpleInfo;
 import com.common.BoxNetAPI.BoxNetAPI;
 import com.common.BoxNetAPI.BoxUploadedFileInfo;
 import com.common.EmailAPI.EmailAPI;
@@ -263,10 +266,33 @@ public class TestScreenActivity extends AppCompatActivity {
         try {
             BoxNetAPI boxNetAPI = new BoxNetAPI(this);
             boxNetAPI.getUserSystemFolder();
-            BoxUploadedFileInfo boxUploadedFileInfo = boxNetAPI.updloadFile(fileToUpload);
+            BoxItemSimpleInfo BoxItemSimpleInfo = null;
+            BoxItemSimpleInfo = boxNetAPI.getUserPrivateFolder("redwave");
+            if(BoxItemSimpleInfo == null){
+                BoxItemSimpleInfo = new BoxItemSimpleInfo();
+                BoxItemSimpleInfo.id = boxNetAPI.createUserPrivateFolder("redwave").id;
+            }
+            boxNetAPI.deleteAllItemInFolder(BoxItemSimpleInfo.id);
+            boxNetAPI.deleteAllItemInFolder(BoxItemSimpleInfo.id);
+            BoxItemSimpleInfo = boxNetAPI.getUserPrivateFolder("redwave");
+            if(BoxItemSimpleInfo == null){
+                BoxItemSimpleInfo = new BoxItemSimpleInfo();
+                BoxItemSimpleInfo.id = boxNetAPI.createUserPrivateFolder("redwave").id;
+            }
+            BoxUploadedFileInfo boxUploadedFileInfo = boxNetAPI.updloadFile(fileToUpload, BoxItemSimpleInfo.id);
             if(boxUploadedFileInfo != null){
                 Toast.makeText(this, "uploaded: " + boxUploadedFileInfo.entries[0].name, Toast.LENGTH_LONG).show();
             }
+            BoxItemSimpleInfo = boxNetAPI.getUserPrivateFolder("redwave");
+            if(BoxItemSimpleInfo != null){
+                BoxItemCollectionInfo BoxItemCollectionInfo = boxNetAPI.getItemList(BoxItemSimpleInfo.id);
+                for(BoxItemSimpleInfo boxItemInfo : BoxItemCollectionInfo.entries){
+                    if(boxItemInfo.name.equals("Arifureta Shokugyou de Sekai Saikyou [WN]_02.pdf")){
+                        boxNetAPI.deleteItem(boxItemInfo);
+                    }
+                }
+            }
+            boxNetAPI.deleteAllItemInTrash();
         }
         catch (Exception e){
             Log.e(TAG,  e.toString());

@@ -6,4 +6,6 @@ public class BoxItemSimpleInfo {
     public String sequence_id;
     public String etag;
     public String name;
+    public String sha1;
+    public BoxFileVersionInfo file_version;
 }

@@ -1,5 +1,5 @@
 package com.common.BoxNetAPI;
 
-public class BoxUploadFileParentInfo {
+public class BoxUploadCreateItemParentInfo {
     public String id;
 }

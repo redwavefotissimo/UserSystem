@@ -1,14 +1,11 @@
 package com.common.BoxNetAPI;
 
 import android.app.Activity;
-
-import com.android.internal.http.multipart.MultipartEntity;
 import com.common.AbstractOrInterface.RestAPIInfo;
 import com.common.RestAPI.RestAPISSL;
+import com.common.RestAPI.RestAPISSLJson;
 import com.common.Utils;
-
-
-import org.apache.http.HttpEntity;
+/*import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -16,7 +13,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
+import org.apache.http.util.EntityUtils;*/
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
@@ -32,7 +29,6 @@ import java.io.StringReader;
 import java.security.PrivateKey;
 import java.security.Security;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BoxNetAPI {
 
@@ -43,6 +39,13 @@ public class BoxNetAPI {
 
     final String getItemListURI = APIBaseURI + "folders/%s/items";
     final String getRootList = APIBaseURI + "folders/0";
+    final String getFileInfo = APIBaseURI + "files/";
+    final String getTrashItems = APIBaseURI + "folders/trash/items";
+    final String createFolder = APIBaseURI + "folders";
+    final String deleteFolder = APIBaseURI + "folders/";
+    final String deleteFile = APIBaseURI + "files/";
+    final String deleteFileInTrash = APIBaseURI + "files/%s/trash";
+    final String deleteFolderInTrash = APIBaseURI + "folders/%s/trash";
 
     BoxCredSettings boxCredSettings;
     PrivateKey key;
@@ -52,11 +55,13 @@ public class BoxNetAPI {
 
     Activity activity;
     RestAPISSL restAPISSL;
+    RestAPISSLJson RestAPISSLJson;
 
     public BoxNetAPI(Activity activity) throws Exception{
         this.activity = activity;
 
         restAPISSL = new RestAPISSL();
+        RestAPISSLJson = new RestAPISSLJson();
 
         String credContent = Utils.StreamToString(Utils.getAssetFileConent(this.activity, credentialBoxNet));
         boxCredSettings = (BoxCredSettings) Utils.JsonStringToObject(credContent, BoxCredSettings.class);
@@ -189,6 +194,7 @@ public class BoxNetAPI {
         restAPIInfoHeaderArrayList.add(restAPIInfo);
 
         restAPISSL.setHeaders(restAPIInfoHeaderArrayList);
+        RestAPISSLJson.setHeaders(restAPIInfoHeaderArrayList);
     }
 
     private BoxItemInfo getRootList() throws Exception{
@@ -201,10 +207,24 @@ public class BoxNetAPI {
         return (BoxItemInfo) Utils.JsonStringToObject(reqResponseString, BoxItemInfo.class);
     }
 
-    private String getItemList(String folderID) throws Exception{
+    public BoxItemInfo getItemInfo(String itemID) throws Exception{
+        String reqResponseString = restAPISSL.GET( getFileInfo + itemID, null);
+
+        if(reqResponseString.startsWith("ERROR:")){
+            throw new Exception(reqResponseString);
+        }
+
+        return (BoxItemInfo) Utils.JsonStringToObject(reqResponseString, BoxItemInfo.class);
+    }
+
+    public BoxItemCollectionInfo getItemList(String folderID) throws Exception{
         String reqResponseString = restAPISSL.GET(String.format(getItemListURI, folderID), null);
 
-        return "";
+        if(reqResponseString.startsWith("ERROR:")){
+            throw new Exception(reqResponseString);
+        }
+
+        return (BoxItemCollectionInfo) Utils.JsonStringToObject(reqResponseString, BoxItemCollectionInfo.class);
     }
 
     public void getUserSystemFolder() throws Exception{
@@ -219,18 +239,26 @@ public class BoxNetAPI {
     }
 
     public BoxUploadedFileInfo updloadFile(File fileToUpload) throws Exception{
+        return updloadFile(fileToUpload, null);
+    }
 
-        BoxUploadFIleInfo BoxUploadFIleInfo = new BoxUploadFIleInfo();
-        BoxUploadFIleInfo.name = fileToUpload.getName();
+    public BoxUploadedFileInfo updloadFile(File fileToUpload, String userPrivateFolderId) throws Exception{
 
-        BoxUploadFIleInfo.parent = new BoxUploadFileParentInfo();
-        BoxUploadFIleInfo.parent.id = userSystemFolder.id;
+        BoxUploadCreateItemInfo BoxUploadCreateItemInfo = new BoxUploadCreateItemInfo();
+        BoxUploadCreateItemInfo.name = fileToUpload.getName();
+
+        BoxUploadCreateItemInfo.parent = new BoxUploadCreateItemParentInfo();
+        if(userPrivateFolderId != null && !userPrivateFolderId.isEmpty()){
+            BoxUploadCreateItemInfo.parent.id = userPrivateFolderId;
+        }else {
+            BoxUploadCreateItemInfo.parent.id = userSystemFolder.id;
+        }
 
         ArrayList<RestAPIInfo> restAPIInfoArrayList = new ArrayList<>();
 
         RestAPIInfo restAPIInfo = new RestAPIInfo();
         restAPIInfo.fieldName = "attributes";
-        restAPIInfo.fieldData = Utils.objectToJsonString(BoxUploadFIleInfo);
+        restAPIInfo.fieldData = Utils.objectToJsonString(BoxUploadCreateItemInfo);
         restAPIInfo.doEncode = false;
         restAPIInfoArrayList.add(restAPIInfo);
 
@@ -248,4 +276,122 @@ public class BoxNetAPI {
 
         return(BoxUploadedFileInfo) Utils.JsonStringToObject(reqResponseString, BoxUploadedFileInfo.class);
     }
+
+    public BoxItemSimpleInfo getUserPrivateFolder(String userPrivateFolder) throws Exception{
+        BoxItemCollectionInfo BoxItemCollectionInfo = getItemList(userSystemFolder.id);
+
+        for(BoxItemSimpleInfo boxItemInfo : BoxItemCollectionInfo.entries){
+            if(boxItemInfo.name.equals(userPrivateFolder)){
+                return boxItemInfo;
+            }
+        }
+
+        return null;
+    }
+
+    public BoxItemInfo createUserPrivateFolder(String userPrivateFolderName) throws Exception{
+        return createUserPrivateFolder(userPrivateFolderName, userSystemFolder.id);
+    }
+
+    public BoxItemInfo createUserPrivateFolder(String userPrivateFolderName, String parentFolderId) throws Exception{
+        BoxUploadCreateItemInfo BoxUploadCreateItemInfo = new BoxUploadCreateItemInfo();
+        BoxUploadCreateItemInfo.name = userPrivateFolderName;
+
+        BoxUploadCreateItemInfo.parent = new BoxUploadCreateItemParentInfo();
+        BoxUploadCreateItemInfo.parent.id = parentFolderId;
+
+        ArrayList<RestAPIInfo> restAPIInfoArrayList = new ArrayList<>();
+
+        RestAPIInfo restAPIInfo = new RestAPIInfo();
+        restAPIInfo.fieldName = "jsonData";
+        restAPIInfo.fieldData = Utils.objectToJsonString(BoxUploadCreateItemInfo);
+        restAPIInfo.doEncode = false;
+        restAPIInfoArrayList.add(restAPIInfo);
+
+        String reqResponseString = RestAPISSLJson.POST(createFolder, restAPIInfoArrayList);
+
+        if(reqResponseString.startsWith("ERROR:")){
+            throw new Exception(reqResponseString);
+        }
+
+        return (BoxItemInfo) Utils.JsonStringToObject(reqResponseString, BoxItemInfo.class);
+    }
+
+    public void deleteAllItemInFolder(String folderId) throws Exception{
+        ArrayList<RestAPIInfo> restAPIInfoArrayList = new ArrayList<>();
+
+        RestAPIInfo restAPIInfo = new RestAPIInfo();
+        restAPIInfo.fieldName = "recursive";
+        restAPIInfo.fieldData = "true";
+        restAPIInfoArrayList.add(restAPIInfo);
+
+        String reqResponseString = restAPISSL.DELETE(deleteFolder + folderId, restAPIInfoArrayList);
+
+        if(reqResponseString.startsWith("ERROR:")){
+            reqResponseString = reqResponseString.replaceFirst("ERROR:", "");
+
+            BoxErrorInfo boxErrorInfo = (BoxErrorInfo) Utils.JsonStringToObject(reqResponseString, BoxErrorInfo.class);
+
+            if(!boxErrorInfo.message.equals("Not Found")){
+                throw new Exception(boxErrorInfo.code + "-" + boxErrorInfo.message);
+            }
+        }
+    }
+
+    public void deleteItem(BoxItemSimpleInfo fileForRemoval) throws Exception{
+
+        restAPISSL.addHeaders("If-Match", fileForRemoval.etag);
+        String reqResponseString = restAPISSL.DELETE(deleteFile + fileForRemoval.id, null);
+        restAPISSL.deleteHeader("If-Match");
+
+        if(reqResponseString.startsWith("ERROR:")){
+            reqResponseString = reqResponseString.replaceFirst("ERROR:", "");
+
+            BoxErrorInfo boxErrorInfo = (BoxErrorInfo) Utils.JsonStringToObject(reqResponseString, BoxErrorInfo.class);
+
+            if(!boxErrorInfo.message.equals("Not Found")){
+                throw new Exception(boxErrorInfo.code + "-" + boxErrorInfo.message);
+            }
+        }
+    }
+
+    private void deleteItemInTrash(String type, String id) throws Exception{
+        String reqResponseString = "";
+
+        if(type.equals("file")){
+            reqResponseString = restAPISSL.DELETE(String.format(deleteFileInTrash, id), null);
+        }else if (type.equals("folder")){
+            reqResponseString = restAPISSL.DELETE(String.format(deleteFolderInTrash, id), null);
+        }
+
+        if(reqResponseString.startsWith("ERROR:")){
+            reqResponseString = reqResponseString.replaceFirst("ERROR:", "");
+
+            BoxErrorInfo boxErrorInfo = (BoxErrorInfo) Utils.JsonStringToObject(reqResponseString, BoxErrorInfo.class);
+
+            if(!boxErrorInfo.message.equals("Not Found")){
+                throw new Exception(boxErrorInfo.code + "-" + boxErrorInfo.message);
+            }
+        }
+    }
+
+    public BoxItemCollectionInfo getAllItemInTrash() throws Exception{
+        String reqResponseString = restAPISSL.GET(getTrashItems, null);
+
+        if(reqResponseString.startsWith("ERROR:")){
+            throw new Exception(reqResponseString);
+        }
+
+        return (BoxItemCollectionInfo) Utils.JsonStringToObject(reqResponseString, BoxItemCollectionInfo.class);
+    }
+
+    public void deleteAllItemInTrash() throws Exception{
+        BoxItemCollectionInfo BoxItemCollectionInfo = getAllItemInTrash();
+
+        for(BoxItemSimpleInfo boxItemSimpleInfo : BoxItemCollectionInfo.entries){
+            deleteItemInTrash(boxItemSimpleInfo.type, boxItemSimpleInfo.id);
+        }
+    }
+
+
 }
