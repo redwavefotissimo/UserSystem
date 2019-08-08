@@ -47,6 +47,8 @@ public class BoxNetAPI {
     final String deleteFileInTrash = APIBaseURI + "files/%s/trash";
     final String deleteFolderInTrash = APIBaseURI + "folders/%s/trash";
 
+    final String HTTP_401 = "Unauthorized";
+
     BoxCredSettings boxCredSettings;
     PrivateKey key;
     String assertion;
@@ -202,6 +204,9 @@ public class BoxNetAPI {
 
         if(reqResponseString.startsWith("ERROR:")){
             throw new Exception(reqResponseString);
+        }else if(reqResponseString.equals(HTTP_401)){
+            getAuthCode();
+            getRootList();
         }
 
         return (BoxItemInfo) Utils.JsonStringToObject(reqResponseString, BoxItemInfo.class);
@@ -212,6 +217,9 @@ public class BoxNetAPI {
 
         if(reqResponseString.startsWith("ERROR:")){
             throw new Exception(reqResponseString);
+        }else if(reqResponseString.equals(HTTP_401)){
+            getAuthCode();
+            getItemInfo(itemID);
         }
 
         return (BoxItemInfo) Utils.JsonStringToObject(reqResponseString, BoxItemInfo.class);
@@ -222,6 +230,9 @@ public class BoxNetAPI {
 
         if(reqResponseString.startsWith("ERROR:")){
             throw new Exception(reqResponseString);
+        }else if(reqResponseString.equals(HTTP_401)){
+            getAuthCode();
+            getItemList(folderID);
         }
 
         return (BoxItemCollectionInfo) Utils.JsonStringToObject(reqResponseString, BoxItemCollectionInfo.class);
@@ -272,6 +283,9 @@ public class BoxNetAPI {
 
         if(reqResponseString.startsWith("ERROR:")){
             throw new Exception(reqResponseString);
+        }else if(reqResponseString.equals(HTTP_401)){
+            getAuthCode();
+            updloadFile(fileToUpload, userPrivateFolderId);
         }
 
         return(BoxUploadedFileInfo) Utils.JsonStringToObject(reqResponseString, BoxUploadedFileInfo.class);
@@ -312,6 +326,9 @@ public class BoxNetAPI {
 
         if(reqResponseString.startsWith("ERROR:")){
             throw new Exception(reqResponseString);
+        }else if(reqResponseString.equals(HTTP_401)){
+            getAuthCode();
+            createUserPrivateFolder(userPrivateFolderName, parentFolderId);
         }
 
         return (BoxItemInfo) Utils.JsonStringToObject(reqResponseString, BoxItemInfo.class);
@@ -335,6 +352,9 @@ public class BoxNetAPI {
             if(!boxErrorInfo.message.equals("Not Found")){
                 throw new Exception(boxErrorInfo.code + "-" + boxErrorInfo.message);
             }
+        }else if(reqResponseString.equals(HTTP_401)){
+            getAuthCode();
+            deleteAllItemInFolder(folderId);
         }
     }
 
@@ -352,6 +372,9 @@ public class BoxNetAPI {
             if(!boxErrorInfo.message.equals("Not Found")){
                 throw new Exception(boxErrorInfo.code + "-" + boxErrorInfo.message);
             }
+        }else if(reqResponseString.equals(HTTP_401)){
+            getAuthCode();
+            deleteItem(fileForRemoval);
         }
     }
 
@@ -372,6 +395,9 @@ public class BoxNetAPI {
             if(!boxErrorInfo.message.equals("Not Found")){
                 throw new Exception(boxErrorInfo.code + "-" + boxErrorInfo.message);
             }
+        }else if(reqResponseString.equals(HTTP_401)){
+            getAuthCode();
+            deleteItemInTrash(type, id);
         }
     }
 
@@ -380,6 +406,9 @@ public class BoxNetAPI {
 
         if(reqResponseString.startsWith("ERROR:")){
             throw new Exception(reqResponseString);
+        }else if(reqResponseString.equals(HTTP_401)){
+            getAuthCode();
+            getAllItemInTrash();
         }
 
         return (BoxItemCollectionInfo) Utils.JsonStringToObject(reqResponseString, BoxItemCollectionInfo.class);

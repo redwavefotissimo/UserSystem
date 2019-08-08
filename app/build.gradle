@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.github.TutorialsAndroid:FilePicker:v4.0.19'
     implementation 'com.kishan.askpermission:askpermission:1.0.3'
     implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
-    implementation group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
 
     implementation files('libs/poi-3.9-20121203.jar')
     implementation files('libs/poi-ooxml-3.9-20121203.jar')

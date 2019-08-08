@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.android.personal.usersystem.R;
 import com.common.BoxNetAPI.BoxItemCollectionInfo;
-import com.common.BoxNetAPI.BoxItemInfo;
 import com.common.BoxNetAPI.BoxItemSimpleInfo;
 import com.common.BoxNetAPI.BoxNetAPI;
 import com.common.BoxNetAPI.BoxUploadedFileInfo;

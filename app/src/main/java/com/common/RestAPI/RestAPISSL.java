@@ -142,6 +142,9 @@ public class RestAPISSL extends RestAPI {
             {
                 responseString = getStringFromInputStream(conn.getInputStream());
             }
+            else if (serverResponseCode == 401){
+                responseString = "Unauthorized";
+            }
             else
             {
                 responseString = "ERROR:" + getStringFromInputStream(conn.getErrorStream());
