@@ -46,6 +46,7 @@ public class BoxNetAPI {
     final String deleteFile = APIBaseURI + "files/";
     final String deleteFileInTrash = APIBaseURI + "files/%s/trash";
     final String deleteFolderInTrash = APIBaseURI + "folders/%s/trash";
+    final String shareFile = APIBaseURI + "files/%s?fields=shared_link";
 
     final String HTTP_401 = "Unauthorized";
 
@@ -422,5 +423,24 @@ public class BoxNetAPI {
         }
     }
 
+    public void setFileItemAsSharable(String itemID) throws Exception{
 
+        ArrayList<RestAPIInfo> restAPIInfoArrayList = new ArrayList<>();
+
+        RestAPIInfo restAPIInfo = new RestAPIInfo();
+        restAPIInfo.fieldName = "jsonData";
+        restAPIInfo.fieldData = "{\"shared_link\": {\"access\": \"open\", \"password\" : null}}";
+        restAPIInfo.doEncode = false;
+        restAPIInfoArrayList.add(restAPIInfo);
+
+        String reqResponseString = RestAPISSLJson.PUT( String.format(shareFile, itemID), restAPIInfoArrayList);
+
+        if(reqResponseString.startsWith("ERROR:")){
+            throw new Exception(reqResponseString);
+        }else if(reqResponseString.equals(HTTP_401)){
+            getAuthCode();
+            setFileItemAsSharable(itemID);
+        }
+
+    }
 }

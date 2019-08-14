@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.android.personal.usersystem.R;
 import com.common.BoxNetAPI.BoxItemCollectionInfo;
+import com.common.BoxNetAPI.BoxItemInfo;
 import com.common.BoxNetAPI.BoxItemSimpleInfo;
 import com.common.BoxNetAPI.BoxNetAPI;
 import com.common.BoxNetAPI.BoxUploadedFileInfo;
@@ -264,6 +265,10 @@ public class TestScreenActivity extends AppCompatActivity {
     private void testBoxNet(){
         try {
             BoxNetAPI boxNetAPI = new BoxNetAPI(this);
+
+            //boxNetAPI.setFileItemAsSharable("505970218103");
+            BoxItemInfo info = boxNetAPI.getItemInfo("505992570934");
+
             boxNetAPI.getUserSystemFolder();
             BoxItemSimpleInfo BoxItemSimpleInfo = null;
             BoxItemSimpleInfo = boxNetAPI.getUserPrivateFolder("redwave");

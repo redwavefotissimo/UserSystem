@@ -42,6 +42,8 @@ abstract public class RestAPI {
 
     abstract public String DELETE(String URI, ArrayList<RestAPIInfo> RestAPIInfos);
 
+    abstract public String PUT(String URI, ArrayList<RestAPIInfo> RestAPIInfos);
+
     protected String constructParametersAsString(ArrayList<RestAPIInfo> RestAPIInfos) throws Exception{
         String parameters = "?";
 

@@ -3,5 +3,5 @@
 
     <dimen name="fieldFontSize">16sp</dimen>
     <dimen name="cameraPreviewMargin">0dp</dimen>
-
+    <dimen name="editTextMaxLength">20</dimen>
 </resources>

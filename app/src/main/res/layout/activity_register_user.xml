@@ -30,6 +30,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:maxLength="@dimen/editTextMaxLength"
                 android:textSize="@dimen/fieldFontSize"/>
         </LinearLayout>
 
@@ -49,6 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:maxLength="@dimen/editTextMaxLength"
                 android:textSize="@dimen/fieldFontSize"/>
         </LinearLayout>
 
@@ -68,6 +70,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:maxLength="@dimen/editTextMaxLength"
                 android:textSize="@dimen/fieldFontSize"/>
         </LinearLayout>
 
@@ -88,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:password="true"
+                android:maxLength="@dimen/editTextMaxLength"
                 android:textSize="@dimen/fieldFontSize"/>
         </LinearLayout>
 
@@ -108,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:password="true"
+                android:maxLength="@dimen/editTextMaxLength"
                 android:textSize="@dimen/fieldFontSize"/>
         </LinearLayout>
 

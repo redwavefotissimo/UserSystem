@@ -10,6 +10,7 @@ public class BoxSharedLinkInfo {
     public boolean is_password_enabled;
     public String password;
     public BoxPermissionInfo permissions;
-    public int download_countl;
+    public String effective_permission;
+    public int download_count;
     public int preview_count;
 }

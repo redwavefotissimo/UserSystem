@@ -1,8 +1,5 @@
 package com.common.BoxNetAPI;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-
 public class BoxItemInfo {
     public String type;
     public String id;
