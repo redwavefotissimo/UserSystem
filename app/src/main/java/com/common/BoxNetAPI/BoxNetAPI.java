@@ -1,6 +1,8 @@
 package com.common.BoxNetAPI;
 
 import android.app.Activity;
+import android.util.Log;
+
 import com.common.AbstractOrInterface.RestAPIInfo;
 import com.common.RestAPI.RestAPISSL;
 import com.common.RestAPI.RestAPISSLJson;
@@ -31,6 +33,8 @@ import java.security.Security;
 import java.util.ArrayList;
 
 public class BoxNetAPI {
+
+    final String TAG = "BoxNetAPI";
 
     final String APIBaseURI = "https://api.box.com/2.0/";
     final String APIBaseUploadURI = "https://upload.box.com/api/2.0/files/content";
@@ -69,9 +73,13 @@ public class BoxNetAPI {
         String credContent = Utils.StreamToString(Utils.getAssetFileConent(this.activity, credentialBoxNet));
         boxCredSettings = (BoxCredSettings) Utils.JsonStringToObject(credContent, BoxCredSettings.class);
 
+        Log.e(TAG, TAG + "before decriptPrivateKey");
         decriptPrivateKey();
+        Log.e(TAG, TAG + "before setJWTClaim");
         setJWTClaim();
+        Log.e(TAG, TAG + "before getting auth code");
         getAuthCode();
+        Log.e(TAG, TAG + "success getting auth code");
     }
 
     private void decriptPrivateKey() throws Exception{
@@ -115,7 +123,7 @@ public class BoxNetAPI {
         claims.setGeneratedJwtId(64);
         // We give the assertion a lifetime of 45 seconds
         // before it expires
-        claims.setExpirationTimeMinutesInTheFuture(0.75f);
+        claims.setExpirationTimeMinutesInTheFuture(1f);
 
         // With the claims in place, it's time to sign the assertion
         JsonWebSignature jws = new JsonWebSignature();
@@ -129,6 +137,8 @@ public class BoxNetAPI {
     }
 
     private void getAuthCode() throws Exception{
+        Thread.sleep(1000 * 60);
+
         ArrayList<RestAPIInfo> restAPIInfoArrayList = new ArrayList<>();
 
         RestAPIInfo restAPIInfo = new RestAPIInfo();
@@ -158,6 +168,7 @@ public class BoxNetAPI {
         String reqResponseString = restAPISSL.POST(authenticationUrl, restAPIInfoArrayList);
 
         if(reqResponseString.startsWith("ERROR:")){
+            Log.e(TAG, reqResponseString);
             throw new Exception(reqResponseString);
         }
 

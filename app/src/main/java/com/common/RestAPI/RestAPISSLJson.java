@@ -27,6 +27,10 @@ public class RestAPISSLJson extends RestAPISSL {
             conn.setRequestProperty("accept", "application/json");
             conn.setRequestProperty("Content-Type","application/json");
 
+            if(this.context != null){
+                conn.setSSLSocketFactory(this.context.getSocketFactory());
+            }
+
             if(this.RestAPIHeaderInfos != null){
                 for(RestAPIInfo info : this.RestAPIHeaderInfos){
                     conn.setRequestProperty(info.fieldName, info.fieldData);
@@ -70,6 +74,10 @@ public class RestAPISSLJson extends RestAPISSL {
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("accept", "application/json");
             conn.setRequestProperty("Content-Type","application/json");
+
+            if(this.context != null){
+                conn.setSSLSocketFactory(this.context.getSocketFactory());
+            }
 
             if(this.RestAPIHeaderInfos != null){
                 for(RestAPIInfo info : this.RestAPIHeaderInfos){

@@ -54,88 +54,111 @@ public class RegisterUserActivity extends AppCompatActivity {
             }
         });
 
-        handlerThread = new HandlerThread("backgroundThread");
-        handlerThread.start();
+        try {
 
-        handler = new Handler(handlerThread.getLooper());
-        UserSystemMySqlAPI = new UserSystemMySqlAPI();
+            handlerThread = new HandlerThread("backgroundThread");
+            handlerThread.start();
 
-        progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
+            handler = new Handler(handlerThread.getLooper());
+            UserSystemMySqlAPI = new UserSystemMySqlAPI(this);
 
-        firstName = (EditText) this.findViewById(R.id.firstName);
-        lastName = (EditText) this.findViewById(R.id.lastName);
-        userName = (EditText) this.findViewById(R.id.userName);
-        password = (EditText) this.findViewById(R.id.password);
-        retypePassword = (EditText) this.findViewById(R.id.retypepassword);
+            progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
 
-        submitBTN = (Button) this.findViewById(R.id.submitBTN);
-        submitBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        enableProgress(true);
-                        BoxItemSimpleInfo BoxItemSimpleInfo = null;
-                        try {
-                            if(boxNetAPI == null) {
-                                boxNetAPI = new BoxNetAPI(RegisterUserActivity.this);
-                            }
-                            if(password.getText().equals(retypePassword.getText())){
-                                toastMessage("password and retype password are not equal");
-                                return;
-                            }
+            firstName = (EditText) this.findViewById(R.id.firstName);
+            lastName = (EditText) this.findViewById(R.id.lastName);
+            userName = (EditText) this.findViewById(R.id.userName);
+            password = (EditText) this.findViewById(R.id.password);
+            retypePassword = (EditText) this.findViewById(R.id.retypepassword);
 
-                            if(fileLocation == null || fileLocation.isEmpty()){
-                                toastMessage("profile picture required");
-                                return;
-                            }
+            submitBTN = (Button) this.findViewById(R.id.submitBTN);
+            submitBTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            enableProgress(true);
+                            BoxItemSimpleInfo BoxItemSimpleInfo = null;
+                            try {
+                                if (boxNetAPI == null) {
+                                    boxNetAPI = new BoxNetAPI(RegisterUserActivity.this);
+                                }
 
-                            UserInfo userInfo = new UserInfo();
-                            userInfo.firstName = firstName.getText().toString();
-                            userInfo.lastName = lastName.getText().toString();
-                            userInfo.userName = userName.getText().toString();
-                            userInfo.password = Utils.convertStringToSha512(password.getText().toString(), UserSystemMySqlAPI.salt);
+                                if(!password.getText().toString().isEmpty() && retypePassword.getText().toString().isEmpty())
+                                {
+                                    toastMessage("retype password is required!");
+                                    return;
+                                }
 
-                            boxNetAPI.getUserSystemFolder();
+                                if(password.getText().toString().isEmpty() && !retypePassword.getText().toString().isEmpty())
+                                {
+                                    toastMessage("password is required!");
+                                    return;
+                                }
 
-                            BoxItemSimpleInfo = boxNetAPI.getUserPrivateFolder(userInfo.userName);
-                            if(BoxItemSimpleInfo == null){
-                                BoxItemSimpleInfo = new BoxItemSimpleInfo();
-                                BoxItemSimpleInfo.id = boxNetAPI.createUserPrivateFolder(userInfo.userName).id;
-                            }
+                                if (!password.getText().toString().equals(retypePassword.getText().toString())
+                                        && !password.getText().toString().isEmpty()
+                                        && !retypePassword.getText().toString().isEmpty()) {
+                                    toastMessage("password and retype password are not equal");
+                                    return;
+                                }
 
-                            userInfo.profileFolderId = boxNetAPI.createUserPrivateFolder(profileFolder, BoxItemSimpleInfo.id).id;
-                            userInfo.attachementFolderId = boxNetAPI.createUserPrivateFolder(attachmentFOlder, BoxItemSimpleInfo.id).id;
+                                if (fileLocation == null || fileLocation.isEmpty()) {
+                                    toastMessage("profile picture required");
+                                    return;
+                                }
 
-                            userInfo.profileId = boxNetAPI.updloadFile(new File(fileLocation), userInfo.profileFolderId).entries[0].id;
+                                UserInfo userInfo = new UserInfo();
+                                userInfo.firstName = firstName.getText().toString();
+                                userInfo.lastName = lastName.getText().toString();
+                                userInfo.userName = userName.getText().toString();
+                                userInfo.password = Utils.convertStringToSha512(password.getText().toString(), UserSystemMySqlAPI.salt);
 
-                            UserSystemMySQLAPIResponse UserSystemMySQLAPIResponse = UserSystemMySqlAPI.insertUser(userInfo);
-                            toastMessage(UserSystemMySQLAPIResponse.message);
-                            if(UserSystemMySQLAPIResponse.statusCode != 200){
+                                boxNetAPI.getUserSystemFolder();
+
+                                BoxItemSimpleInfo = boxNetAPI.getUserPrivateFolder(userInfo.userName);
+                                if (BoxItemSimpleInfo == null) {
+                                    BoxItemSimpleInfo = new BoxItemSimpleInfo();
+                                    BoxItemSimpleInfo.id = boxNetAPI.createUserPrivateFolder(userInfo.userName).id;
+                                }
+
+                                userInfo.profileFolderId = boxNetAPI.createUserPrivateFolder(profileFolder, BoxItemSimpleInfo.id).id;
+                                userInfo.attachementFolderId = boxNetAPI.createUserPrivateFolder(attachmentFOlder, BoxItemSimpleInfo.id).id;
+
+                                userInfo.profileId = boxNetAPI.updloadFile(new File(fileLocation), userInfo.profileFolderId).entries[0].id;
+
+                                Thread.sleep(1000);
+
+                                boxNetAPI.setFileItemAsSharable(userInfo.profileId);
+
+                                UserSystemMySQLAPIResponse UserSystemMySQLAPIResponse = UserSystemMySqlAPI.insertUser(userInfo);
+                                toastMessage(UserSystemMySQLAPIResponse.message);
+                                if (UserSystemMySQLAPIResponse.statusCode != 200) {
+                                    deleteAllCreatedBoxContent(BoxItemSimpleInfo);
+                                }
+                            } catch (Exception ex) {
                                 deleteAllCreatedBoxContent(BoxItemSimpleInfo);
+                                toastMessage(ex.toString());
+                            } finally {
+                                enableProgress(false);
                             }
                         }
-                        catch(Exception ex){
-                            deleteAllCreatedBoxContent(BoxItemSimpleInfo);
-                            toastMessage(ex.toString());
-                        }
-                        finally{
-                            enableProgress(false);
-                        }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
 
-        takePictureBTN = (Button) this.findViewById(R.id.takePictureBTN);
-        takePictureBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(RegisterUserActivity.this, CameraActivity.class);
-                startActivityForResult(i, requestTakeCamera);
-            }
-        });
+            takePictureBTN = (Button) this.findViewById(R.id.takePictureBTN);
+            takePictureBTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(RegisterUserActivity.this, CameraActivity.class);
+                    startActivityForResult(i, requestTakeCamera);
+                }
+            });
+        }
+        catch(Exception e){
+            toastMessage(e.toString());
+        }
     }
 
     @Override

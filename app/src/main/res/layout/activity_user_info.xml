@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Activity.RegisterUserActivity">
+    tools:context=".Activity.UserInfoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,7 +63,7 @@
                 android:layout_weight="1"
                 android:text="@string/userName"
                 android:textSize="@dimen/fieldFontSize"/>
-            <EditText
+            <TextView
                 android:id="@+id/userName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -83,10 +81,31 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/password"
+                android:text="@string/oldpassword"
                 android:textSize="@dimen/fieldFontSize"/>
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/oldpassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:password="true"
+                android:maxLength="@integer/editTextMaxLength"
+                android:textSize="@dimen/fieldFontSize"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/newpassword"
+                android:textSize="@dimen/fieldFontSize"/>
+            <EditText
+                android:id="@+id/newpassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -127,10 +146,10 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/submitBTN"
+        android:id="@+id/updateBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submitBtn"
+        android:text="@string/updateBtn"
         android:layout_alignParentBottom="true"
         android:textSize="@dimen/fieldFontSize"/>
 
@@ -141,4 +160,5 @@
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </RelativeLayout>

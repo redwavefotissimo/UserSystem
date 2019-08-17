@@ -39,6 +39,10 @@ public class RestAPISSL extends RestAPI {
             conn.setRequestProperty("accept-charset", "UTF-8");
             conn.setRequestProperty("Content-Type","multipart/form-data;charset=utf-8;boundary=" + boundary);
 
+            if(this.context != null){
+                conn.setSSLSocketFactory(this.context.getSocketFactory());
+            }
+
             if(this.RestAPIHeaderInfos != null){
                 for(RestAPIInfo info : this.RestAPIHeaderInfos){
                     conn.setRequestProperty(info.fieldName, info.fieldData);
@@ -130,6 +134,10 @@ public class RestAPISSL extends RestAPI {
             conn = (HttpsURLConnection) url.openConnection();
             //conn.setConnectTimeout(1500);
 
+            if(this.context != null){
+                conn.setSSLSocketFactory(this.context.getSocketFactory());
+            }
+
             if(this.RestAPIHeaderInfos != null){
                 for(RestAPIInfo info : this.RestAPIHeaderInfos){
                     conn.setRequestProperty(info.fieldName, info.fieldData);
@@ -166,6 +174,10 @@ public class RestAPISSL extends RestAPI {
             conn = (HttpsURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
             //conn.setConnectTimeout(1500);
+
+            if(this.context != null){
+                conn.setSSLSocketFactory(this.context.getSocketFactory());
+            }
 
             if(this.RestAPIHeaderInfos != null){
                 for(RestAPIInfo info : this.RestAPIHeaderInfos){
@@ -217,6 +229,10 @@ public class RestAPISSL extends RestAPI {
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("accept-charset", "UTF-8");
             conn.setRequestProperty("Content-Type","multipart/form-data;charset=utf-8;boundary=" + boundary);
+
+            if(this.context != null){
+                conn.setSSLSocketFactory(this.context.getSocketFactory());
+            }
 
             if(this.RestAPIHeaderInfos != null){
                 for(RestAPIInfo info : this.RestAPIHeaderInfos){

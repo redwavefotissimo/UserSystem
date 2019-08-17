@@ -19,17 +19,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.CameraActivity"></activity>
-        <activity android:name=".Activity.RegisterUserActivity">
-
-        </activity>
-        <activity android:name=".Activity.TestScreenActivity">
+        <activity android:name=".Activity.UserInfoActivity"></activity>
+        <activity android:name=".Activity.LoginUserActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.CameraActivity" />
+        <activity android:name=".Activity.RegisterUserActivity"></activity>
+        <activity android:name=".Activity.TestScreenActivity" />
 
         <receiver android:name=".Activity.SMSReceiver">
             <intent-filter>
