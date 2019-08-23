@@ -1,18 +1,27 @@
 package com.common.ExcelAPI;
 
+import android.util.Log;
+
+import com.common.AbstractOrInterface.ClassInfoAnnotation;
 import com.common.AbstractOrInterface.WriterManager;
 import com.common.AbstractOrInterface.WriterManagerInfo;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.FontUnderline;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 
 import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.Bold;
 import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.BoldItalic;
@@ -22,7 +31,10 @@ import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.Ital
 import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.StrikeThrough;
 import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.UnderLine;
 
+@ClassInfoAnnotation(name="Excel Format")
 public class ExcelAPI extends WriterManager {
+
+    final String TAG = "ExcelAPI";
 
     XSSFWorkbook workBook;
     XSSFSheet sheet;
@@ -49,15 +61,19 @@ public class ExcelAPI extends WriterManager {
 
     @Override
     public void insertRow(WriterManagerInfo writerManagerInfo, int col){
-        Cell cell = rowHeader.createCell(col);
-        cell.setCellValue(writerManagerInfo.value);
-        XSSFCellStyle style = workBook.createCellStyle();
-        style.setAlignment(setAlignment(writerManagerInfo.contentAlignment));
-        XSSFFont font = workBook.createFont();
-        setContentStylet(font, writerManagerInfo.contentStyle);
-        font.setFontHeight(writerManagerInfo.contentSize);
-        style.setFont(font);
-        cell.setCellStyle(style);
+        if(writerManagerInfo.format == WriterManagerInfo.DataFormat.Image){
+            insertCellWithImage(writerManagerInfo, col);
+        }else {
+            Cell cell = rowHeader.createCell(col);
+            cell.setCellValue(writerManagerInfo.value);
+            XSSFCellStyle style = workBook.createCellStyle();
+            style.setAlignment(setAlignment(writerManagerInfo.contentAlignment));
+            XSSFFont font = workBook.createFont();
+            setContentStylet(font, writerManagerInfo.contentStyle);
+            font.setFontHeight(writerManagerInfo.contentSize);
+            style.setFont(font);
+            cell.setCellStyle(style);
+        }
     }
 
     @Override
@@ -107,6 +123,41 @@ public class ExcelAPI extends WriterManager {
         }
         if(contentStyle == StrikeThrough || contentStyle == BoldStrikeThrough) {
             font.setStrikeout(true);
+        }
+    }
+
+    @Override
+    public void insertCellWithImage(WriterManagerInfo writerManagerInfo, int col) {
+        InputStream inputStream = null;
+        try{
+            inputStream = new FileInputStream(writerManagerInfo.value);
+            byte[] imageBytes = IOUtils.toByteArray(inputStream);
+            int pictureureIdx = workBook.addPicture(imageBytes, workBook.PICTURE_TYPE_PNG);
+
+            CreationHelper helper = workBook.getCreationHelper();
+
+            Drawing drawing = sheet.createDrawingPatriarch();
+
+            ClientAnchor anchor = helper.createClientAnchor();
+
+            anchor.setCol1(col);
+            anchor.setCol2(col + 1);
+            anchor.setRow1(this.row);
+            anchor.setRow2(this.row + 1);
+
+            drawing.createPicture(anchor, pictureureIdx);
+        }
+        catch (Exception ex){
+            Log.e(TAG, ex.toString());
+        }
+        finally{
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            }catch(Exception ex){
+                Log.e(TAG, ex.toString());
+            }
         }
     }
 }

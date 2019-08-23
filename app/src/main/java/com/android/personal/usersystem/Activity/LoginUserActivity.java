@@ -4,14 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.personal.usersystem.R;
 import com.android.personal.usersystem.UserSystemMySqlAPI.UserInfo;
@@ -20,9 +16,7 @@ import com.android.personal.usersystem.UserSystemMySqlAPI.UserSystemMySqlAPI;
 import com.android.personal.usersystem.data.SharedStaticClass;
 import com.common.Utils;
 
-public class LoginUserActivity extends AppCompatActivity {
-
-    final String TAG = "LoginUserActivity";
+public class LoginUserActivity extends BaseActivity {
 
 
     EditText userName, password;
@@ -38,11 +32,7 @@ public class LoginUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_user);
 
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
-                Log.e(TAG,  paramThrowable.getMessage());
-            }
-        });
+        TAG = "LoginUserActivity";
 
         try {
             handlerThread = new HandlerThread("backgroundThread");
@@ -107,16 +97,6 @@ public class LoginUserActivity extends AppCompatActivity {
         catch(Exception e){
             toastMessage(e.toString());
         }
-    }
-
-
-    private void toastMessage(final String message){
-        LoginUserActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(LoginUserActivity.this, message, Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private void enableControls(final boolean enable){

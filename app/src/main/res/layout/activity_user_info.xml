@@ -143,6 +143,22 @@
             android:layout_alignParentBottom="true"
             android:textSize="@dimen/fieldFontSize"/>
 
+        <Button
+            android:id="@+id/attachmentListBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/attachmentList"
+            android:layout_alignParentBottom="true"
+            android:textSize="@dimen/fieldFontSize"/>
+
+        <Button
+            android:id="@+id/scannerBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/scanner"
+            android:layout_alignParentBottom="true"
+            android:textSize="@dimen/fieldFontSize"/>
+
     </LinearLayout>
 
     <Button

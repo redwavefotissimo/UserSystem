@@ -35,7 +35,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
     TextView userName;
     EditText firstName, lastName, newpassword, retypePassword, oldpassword;
-    Button updateBTN, takePictureBTN;
+    Button updateBTN, takePictureBTN, attachmentListBTN, scannerBTN;
     ProgressBar progressBar;
 
     String fileLocation;
@@ -177,6 +177,24 @@ public class UserInfoActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent i = new Intent(UserInfoActivity.this, CameraActivity.class);
                     startActivityForResult(i, requestTakeCamera);
+                }
+            });
+
+            attachmentListBTN = (Button) this.findViewById(R.id.attachmentListBTN);
+            attachmentListBTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(UserInfoActivity.this, UserAttachmentsActivity.class);
+                    startActivity(i);
+                }
+            });
+
+            scannerBTN = (Button) this.findViewById(R.id.scannerBTN);
+            scannerBTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(UserInfoActivity.this, ScannerActivity.class);
+                    startActivity(i);
                 }
             });
 

@@ -1,18 +1,14 @@
 package com.android.personal.usersystem.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.android.personal.usersystem.R;
 import com.android.personal.usersystem.UserSystemMySqlAPI.UserInfo;
@@ -25,9 +21,8 @@ import com.common.Utils;
 import java.io.File;
 
 
-public class RegisterUserActivity extends AppCompatActivity {
+public class RegisterUserActivity extends BaseActivity {
 
-    final String TAG = "RegisterUserActivity";
     final String profileFolder = "PROFILE_FOLDER";
     final String attachmentFOlder = "ATTACHMENT_FOLDER";
 
@@ -48,11 +43,7 @@ public class RegisterUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
 
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
-                Log.e(TAG,  paramThrowable.getMessage());
-            }
-        });
+        TAG = "RegisterUserActivity";
 
         try {
 
@@ -181,15 +172,6 @@ public class RegisterUserActivity extends AppCompatActivity {
         }catch(Exception ex2){
             toastMessage(ex2.toString());
         }
-    }
-
-    private void toastMessage(final String message){
-        RegisterUserActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(RegisterUserActivity.this, message, Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private void enableControls(final boolean enable){

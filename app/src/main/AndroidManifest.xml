@@ -19,7 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.UserInfoActivity"></activity>
+        <activity android:name=".Activity.UserAttachmentsActivity"></activity>
+        <activity android:name=".Activity.ScannerActivity">
+
+        </activity>
+        <activity android:name=".Activity.UserInfoActivity" />
         <activity android:name=".Activity.LoginUserActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.CameraActivity" />
-        <activity android:name=".Activity.RegisterUserActivity"></activity>
+        <activity android:name=".Activity.RegisterUserActivity" />
         <activity android:name=".Activity.TestScreenActivity" />
 
         <receiver android:name=".Activity.SMSReceiver">

@@ -1,10 +1,17 @@
 package com.common.HTMLAPI;
 
+import android.util.Base64;
+import android.util.Log;
+
+import com.common.AbstractOrInterface.ClassInfoAnnotation;
 import com.common.AbstractOrInterface.WriterManager;
 import com.common.AbstractOrInterface.WriterManagerInfo;
+import com.common.Utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
 import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.Bold;
@@ -15,8 +22,10 @@ import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.Ital
 import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.StrikeThrough;
 import static com.common.AbstractOrInterface.WriterManagerInfo.ContentStyle.UnderLine;
 
-
+@ClassInfoAnnotation(name="HTML Format")
 public class HTMLAPI extends WriterManager {
+
+    final String TAG = "ExcelAPI";
 
     StringBuilder htmlDocument;
 
@@ -43,9 +52,13 @@ public class HTMLAPI extends WriterManager {
 
     @Override
     public void insertRow(WriterManagerInfo writerManagerInfo, int col) {
-        htmlDocument.append("<td style='"+ this.setCSSStyle(writerManagerInfo) +"' >");
-        htmlDocument.append(writerManagerInfo.value);
-        htmlDocument.append("</td>");
+        if(writerManagerInfo.format == WriterManagerInfo.DataFormat.Image){
+            insertCellWithImage(writerManagerInfo, col);
+        }else {
+            htmlDocument.append("<td style='" + this.setCSSStyle(writerManagerInfo) + "' >");
+            htmlDocument.append(writerManagerInfo.value);
+            htmlDocument.append("</td>");
+        }
     }
 
     @Override
@@ -54,6 +67,30 @@ public class HTMLAPI extends WriterManager {
         insertRow(writerManagerInfo, 0);
         htmlDocument.append("</tr>");
         this.row++;
+    }
+
+    @Override
+    public void insertCellWithImage(WriterManagerInfo writerManagerInfo, int col) {
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(writerManagerInfo.value);
+
+            htmlDocument.append("<td style='" + this.setCSSStyle(writerManagerInfo) + "' >");
+            htmlDocument.append("<img src=\"data:image/png;base64, " + new String(Base64.encode(Utils.toByteArray(inputStream), Base64.DEFAULT)) + "\"  alt=\"Barcode Image\" />");
+            htmlDocument.append("</td>");
+        }
+        catch (Exception ex){
+            Log.e(TAG, ex.toString());
+        }
+        finally{
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            }catch(Exception ex){
+                Log.e(TAG, ex.toString());
+            }
+        }
     }
 
     @Override

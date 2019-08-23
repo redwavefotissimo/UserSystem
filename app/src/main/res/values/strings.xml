@@ -30,5 +30,12 @@
     <string name="oldpassword">Old Password</string>
     <string name="newpassword">New Password</string>
     <string name="oldPasswordWrong">Old Password Wrong</string>
+    <string name="attachmentList">Attachment List</string>
+    <string name="scanner">Scanner</string>
 
+
+    <!-- Scanner Activity -->
+    <string name="upload">Upload</string>
+    <string name="scanText">Scan Text</string>
+    <string name="reScan">Re Scan</string>
 </resources>

@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import com.common.AbstractOrInterface.RestAPIInfo;
 import com.common.RestAPI.RestAPIBasicJson;
-import com.common.RestAPI.RestAPISSLJson;
 import com.common.Utils;
 
 import java.util.ArrayList;
@@ -22,51 +21,15 @@ public class UserSystemMySqlAPI {
     }
 
     public UserSystemMySQLAPIResponse insertUser(UserInfo userInfo) throws Exception{
-
-        ArrayList<RestAPIInfo> restAPIInfos = new ArrayList<RestAPIInfo>();
-        RestAPIInfo restAPIInfo = new RestAPIInfo();
-        restAPIInfo.fieldData = Utils.objectToJsonString(userInfo);
-        restAPIInfos.add(restAPIInfo);
-
-        String reqResponseString = RestAPIBasicJson.POST(baseURI + "InsertUser.jsp", restAPIInfos);
-
-        if(reqResponseString.startsWith("ERROR:")){
-            throw new Exception(reqResponseString);
-        }
-
-        return (UserSystemMySQLAPIResponse) Utils.JsonStringToObject(reqResponseString, UserSystemMySQLAPIResponse.class);
+        return basicPostToUserSystemMySQLAPI(userInfo, "InsertUser.jsp");
     }
 
     public UserSystemMySQLAPIResponse updateUser(UserInfo userInfo) throws Exception{
-
-        ArrayList<RestAPIInfo> restAPIInfos = new ArrayList<RestAPIInfo>();
-        RestAPIInfo restAPIInfo = new RestAPIInfo();
-        restAPIInfo.fieldData = Utils.objectToJsonString(userInfo);
-        restAPIInfos.add(restAPIInfo);
-
-        String reqResponseString = RestAPIBasicJson.POST(baseURI + "UpdateUser.jsp", restAPIInfos);
-
-        if(reqResponseString.startsWith("ERROR:")){
-            throw new Exception(reqResponseString);
-        }
-
-        return (UserSystemMySQLAPIResponse) Utils.JsonStringToObject(reqResponseString, UserSystemMySQLAPIResponse.class);
+        return basicPostToUserSystemMySQLAPI(userInfo, "UpdateUser.jsp");
     }
 
     public UserSystemMySQLAPIResponse loginUser(UserInfo userInfo) throws Exception{
-
-        ArrayList<RestAPIInfo> restAPIInfos = new ArrayList<RestAPIInfo>();
-        RestAPIInfo restAPIInfo = new RestAPIInfo();
-        restAPIInfo.fieldData = Utils.objectToJsonString(userInfo);
-        restAPIInfos.add(restAPIInfo);
-
-        String reqResponseString = RestAPIBasicJson.POST(baseURI + "LoginUser.jsp", restAPIInfos);
-
-        if(reqResponseString.startsWith("ERROR:")){
-            throw new Exception(reqResponseString);
-        }
-
-        return (UserSystemMySQLAPIResponse) Utils.JsonStringToObject(reqResponseString, UserSystemMySQLAPIResponse.class);
+        return basicPostToUserSystemMySQLAPI(userInfo, "LoginUser.jsp");
     }
 
     public Object getUserInfo(UserInfo userInfo) throws Exception{
@@ -85,4 +48,41 @@ public class UserSystemMySqlAPI {
             return (UserInfo) Utils.JsonStringToObject(reqResponseString, UserInfo.class);
         }
     }
+
+    public UserSystemMySQLAPIResponse insertUserAttachment(UserAttachmentInfo userAttachmentInfo) throws Exception{
+        return basicPostToUserSystemMySQLAPI(userAttachmentInfo, "InsertUserAttachment.jsp");
+    }
+
+    public Object getUserAttachmentInfo(UserAttachmentInfo userAttachmentInfo) throws Exception{
+        ArrayList<RestAPIInfo> restAPIInfos = new ArrayList<RestAPIInfo>();
+        RestAPIInfo restAPIInfo = new RestAPIInfo();
+        restAPIInfo.fieldData = Utils.objectToJsonString(userAttachmentInfo);
+        restAPIInfos.add(restAPIInfo);
+
+        String reqResponseString = RestAPIBasicJson.POST(baseURI + "GetUserAttachments.jsp", restAPIInfos);
+
+        if(reqResponseString.startsWith("ERROR:")){
+            reqResponseString = reqResponseString.replaceFirst("ERROR:", "");
+            return (UserSystemMySQLAPIResponse) Utils.JsonStringToObject(reqResponseString, UserSystemMySQLAPIResponse.class);
+        }
+        else{
+            return (UserAttachmentListInfo) Utils.JsonStringToObject(reqResponseString, UserAttachmentListInfo.class);
+        }
+    }
+
+    private UserSystemMySQLAPIResponse basicPostToUserSystemMySQLAPI(Object objectClass, String restAPILocation) throws Exception {
+        ArrayList<RestAPIInfo> restAPIInfos = new ArrayList<RestAPIInfo>();
+        RestAPIInfo restAPIInfo = new RestAPIInfo();
+        restAPIInfo.fieldData = Utils.objectToJsonString(objectClass);
+        restAPIInfos.add(restAPIInfo);
+
+        String reqResponseString = RestAPIBasicJson.POST(baseURI + restAPILocation, restAPIInfos);
+
+        if(reqResponseString.startsWith("ERROR:")){
+            throw new Exception(reqResponseString);
+        }
+
+        return (UserSystemMySQLAPIResponse) Utils.JsonStringToObject(reqResponseString, UserSystemMySQLAPIResponse.class);
+    }
+
 }

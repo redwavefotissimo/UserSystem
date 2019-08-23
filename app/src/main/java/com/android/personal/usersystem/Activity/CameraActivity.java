@@ -39,6 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.personal.usersystem.R;
+import com.common.Utils;
 import com.kishan.askpermission.AskPermission;
 import com.kishan.askpermission.ErrorCallback;
 import com.kishan.askpermission.PermissionCallback;
@@ -50,6 +51,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,9 +59,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class CameraActivity extends AppCompatActivity {
+public class CameraActivity extends BaseActivity {
 
-    final String TAG = "CameraActivity";
     final int PermissionRequestCode = 1212;
 
     public static final String FILE_LOCATION = "FILE_LOCATION";
@@ -93,6 +94,8 @@ public class CameraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        TAG = "CameraActivity";
 
         new AskPermission.Builder(this)
                 .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
@@ -234,7 +237,7 @@ public class CameraActivity extends AppCompatActivity {
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-            final File file = new File(Environment.getExternalStorageDirectory() + "/pic.jpg");
+            final File file = new File(super.fileSaveLocation + "/pic.jpg");
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
@@ -249,7 +252,10 @@ public class CameraActivity extends AppCompatActivity {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    } finally {
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    finally {
                         if (image != null) {
                             image.close();
                         }
@@ -257,15 +263,7 @@ public class CameraActivity extends AppCompatActivity {
                 }
 
                 private void save(byte[] bytes) throws IOException {
-                    OutputStream output = null;
-                    try {
-                        output = new FileOutputStream(file);
-                        output.write(bytes);
-                    } finally {
-                        if (null != output) {
-                            output.close();
-                        }
-                    }
+                    Utils.saveByteToFile(bytes, file);
                 }
 
                 private byte[] cropImage(byte[] data, int width, int height){
@@ -282,12 +280,7 @@ public class CameraActivity extends AppCompatActivity {
                     Bitmap cropped = Bitmap.createBitmap(bitmap, 0, 0, croppedWidth, croppedHeight, matrix, true);
                     bitmap.recycle();
 
-
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    cropped.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    byte[] byteArray = stream.toByteArray();
-                    cropped.recycle();
-                    return byteArray;
+                    return Utils.convertBitmapToByte(cropped);
                 }
             };
             reader.setOnImageAvailableListener(readerListener, mBackgroundHandler);

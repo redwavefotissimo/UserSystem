@@ -19,18 +19,23 @@ public class WriterManagerInfo {
         BoldUnderLine
     }
 
+    public static enum DataFormat{
+        Text,
+        Image
+    }
+
     public WriterManagerInfo(){
         this.contentAlignment = ContentAlignment.Left;
         this.contentStyle = ContentStyle.Normal;
         this.contentSize = 12.0D;
-        this.format = "";
+        this.format = DataFormat.Text;
         this.value = "";
     }
 
     public ContentAlignment contentAlignment;
     public ContentStyle contentStyle;
     public String value;
-    public String format;
+    public DataFormat format;
     public double contentSize;
 
 }

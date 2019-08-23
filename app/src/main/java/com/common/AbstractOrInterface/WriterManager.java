@@ -23,5 +23,15 @@ abstract public class WriterManager {
 
     abstract public void insertRow(WriterManagerInfo writerManagerInfo);
 
+    abstract public void insertCellWithImage(WriterManagerInfo writerManagerInfo, int col);
+
     abstract public void write() throws Exception;
+
+    public File getFileLoc(){
+        return new File(this.saveFileLocation, this.fileName + this.fileType);
+    }
+
+    public void deleteFile(){
+        this.getFileLoc().delete();
+    }
 }
