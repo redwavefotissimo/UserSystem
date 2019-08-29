@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".Activity.UserAttachmentsActivity">
 
-    
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/userAttachmentRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

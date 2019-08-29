@@ -137,7 +137,7 @@ public class BoxNetAPI {
     }
 
     private void getAuthCode() throws Exception{
-        Thread.sleep(1000 * 60);
+        Thread.sleep(1000 * 40);
 
         ArrayList<RestAPIInfo> restAPIInfoArrayList = new ArrayList<>();
 
